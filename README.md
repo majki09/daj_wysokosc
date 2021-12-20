@@ -4,8 +4,8 @@
 
 ## Opis
 Skrypt daje wysokość w metrach dla podanego punktu w Polsce. Korzysta z serwera GUGIK, który przyjmuje współrzędne 
-jedynie w systemie PUWG-1992. Mając tylko współrzędne wg WGS-84 skrypt konwertuje jednostki za nas i
-daje gotowy wynik.
+jedynie w systemie PUWG-1992. Mając tylko współrzędne wg WGS-84 skrypt automatycznie konwertuje jednostki i daje gotowy
+wynik.
 
 
 ## Parametry
@@ -19,6 +19,10 @@ daje gotowy wynik.
 
     $ python3 daj_wysokosc.py --B 50.01234567 --L 20.01234567
     222.5
+
+## Linki
+* https://services.gugik.gov.pl/nmt/
+* https://mapy.geoportal.gov.pl/
 
 ## Podziękowania
 - RusheerPL (https://github.com/CrusheerPL/demGenerator)
