@@ -1,6 +1,6 @@
 # Wysokość dla każdego punktu w Polsce
 
-![alt text](https://raw.githubusercontent.com/majki09/daj_wysokosc/main/obrazek.jpg "Przykładowy widok w geoportalu.")
+![alt text](https://raw.githubusercontent.com/majki09/daj_wysokosc/master/obrazek.jpg "Przykładowy widok w geoportalu.")
 
 ## Opis
 Skrypt daje wysokość w metrach dla podanego punktu w Polsce. Korzysta z serwera GUGIK, który przyjmuje współrzędne 
