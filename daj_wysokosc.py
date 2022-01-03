@@ -1,9 +1,10 @@
 import argparse
 import math
+import sys
 import requests
 
 
-def wgs84_do_puwg92(B_stopnie, L_stopnie):
+def wgs84_do_puwg92(b_stopnie, l_stopnie):
     """
     Original C++ code from:  :
         Author: Zbigniew Szymanski
@@ -51,12 +52,12 @@ def wgs84_do_puwg92(B_stopnie, L_stopnie):
     a6 = -0.00010504
 
     # Parametry odwzorowania Gaussa-Kruegera dla układu PUWG92
-    L0_stopnie = 19.0  # Początek układu współrzędnych PUWG92 (długość)
+    # L0_stopnie = 19.0  # Początek układu współrzędnych PUWG92 (długość)   # - niepotrzebne?
     m0 = 0.9993
     x0 = -5300000.0
     y0 = 500000.0
 
-    B = B_stopnie * math.pi / 180.0
+    B = b_stopnie * math.pi / 180.0
     # dL = (L_stopnie - 19.0) * math.pi / 180.0   # - niepotrzebne?
 
     # etap I - elipsoida na kulę
@@ -65,7 +66,7 @@ def wgs84_do_puwg92(B_stopnie, L_stopnie):
     K = math.pow((U / V), (e / 2.0))
     C = K * math.tan(B / 2.0 + math.pi / 4.0)
     fi = 2.0 * math.atan(C) - math.pi / 2.0
-    d_lambda = (L_stopnie - 19.0) * math.pi / 180.0
+    d_lambda = (l_stopnie - 19.0) * math.pi / 180.0
 
     # etap II - kula na walec
     p = math.sin(fi)
@@ -97,18 +98,19 @@ def get_elevation(B: float, L: float):
     :return: (str) wysokość nad poziomem morza [m] dla podanego punktu.
     """
 
-    X, Y = wgs84_do_puwg92(B, L)
+    x, y = wgs84_do_puwg92(B, L)
 
-    server_address = "https://services.gugik.gov.pl/nmt/?request=GetHByXY&x={x}&y={y}".format(x=X, y=Y)
+    server_address = f"https://services.gugik.gov.pl/nmt/?request=GetHByXY&x={x}&y={y}"
     response = requests.get(server_address)
 
     if response.status_code != 200:
         raise ConnectionError("Cannot connect.")
-    elif response.content in [b"", b"0"]:
+
+    if response.content in [b"", b"0"]:
         raise ValueError("Bad response value. Check request.")
-    else:
-        elevation = response.content.decode(response.encoding)
-        return elevation
+
+    elevation = response.content.decode(response.encoding)
+    return elevation
 
 
 def run_me():
@@ -122,7 +124,7 @@ def run_me():
         L = float(args.L)
     except ValueError:
         print("Nieprawidłowe dane wejściowe")
-        exit(1)
+        sys.exit(1)
 
     print(get_elevation(B, L))
 
